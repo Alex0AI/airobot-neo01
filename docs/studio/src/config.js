@@ -1,0 +1,5 @@
+export const config = Object.freeze({brand:'AIROBOT', chineseBrand:'爱洛智能', version:'0.1.0-preview', mode:'mock', storageKey:'airobot.studio.v1', apiBase:'/api/v1', websocketUrl:null, cameraSignalingUrl:null, repository:'https://github.com/Alex0AI/airobot-neo01', workspace:'Personal workspace', organization:'Demo organization'});
+export const workflow = ['Hardware','Teleoperation','Data Collection','Dataset','Training','Simulation','Deployment','Skills'];
+export const publicNav = [['Platform','platform'],['Product','product'],['Developers','developers'],['Docs','docs/getting-started']];
+export const consoleNav = [['Overview','dashboard','grid'],['Robots','robots','robot'],['Live Control','live-control','cross'],['Datasets','datasets','database'],['Training Runs','training','chart'],['Models','models','box'],['Simulation','simulation','cube'],['Deployments','deployments','upload'],['Skills','skills','spark'],['Activity & Logs','logs','terminal']];
+export const demoSteps = ['Connect Robot','View Camera','Teleoperate Robot','Record Episode','Save Dataset','Start Training','View Loss Curve','Test in Simulation','Deploy Model','Add Skill'];

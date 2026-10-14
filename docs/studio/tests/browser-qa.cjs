@@ -1,0 +1,23 @@
+const { chromium } = require(process.env.AIROBOT_PLAYWRIGHT || 'playwright');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+const output = path.resolve(__dirname, '../test-results');
+require('node:fs').mkdirSync(output,{recursive:true});
+(async()=>{
+ const {pages,docs}=await import('../src/data/content.js');const {consoleNav}=await import('../src/config.js');
+ const routes=['','demo','early-access',...Object.keys(pages),...docs.map(d=>'docs/'+d[0]),...consoleNav.map(n=>'console/'+n[1])];
+ const browser=await chromium.launch({headless:true,channel:'msedge'});let checked=0;const failures=[];
+ for(const width of [1440,390]){const page=await browser.newPage({viewport:{width,height:1000}});page.on('pageerror',err=>failures.push({width,error:err.message}));
+  for(const route of routes){await page.goto('http://127.0.0.1:4173/#/'+route,{waitUntil:'domcontentloaded'});await page.locator('h1').waitFor();await page.waitForTimeout(40);const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);if(overflow)failures.push({width,route,error:'horizontal overflow'});const broken=await page.locator('a[href^="#/"]').evaluateAll((anchors,valid)=>anchors.map(a=>a.getAttribute('href').slice(2)).filter(r=>!valid.includes(r)),routes);if(broken.length)failures.push({width,route,error:'broken routes',broken});checked++;if(['','console/dashboard','docs/getting-started','demo'].includes(route))await page.screenshot({path:path.join(output,(route.replaceAll('/','-')||'home')+'-'+width+'.png'),fullPage:true});}
+  await page.close();
+ }
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',err=>failures.push({error:err.message}));await page.goto('http://127.0.0.1:4173/#/demo');
+ await page.getByRole('button',{name:'Connect Robot',exact:true}).click();await page.getByRole('button',{name:'Enable Camera',exact:true}).click();await page.locator('[data-joint="0"]').fill('30');await page.locator('[data-joint="0"]').dispatchEvent('change');await page.getByRole('button',{name:'Record Episode',exact:true}).click();await page.waitForTimeout(1050);await page.getByRole('button',{name:'Stop & capture',exact:true}).click();await page.getByRole('button',{name:'Save Dataset',exact:true}).click();await page.locator('dialog input[name="name"]').fill('QA tabletop');await page.locator('dialog button[type="submit"]').click();await page.getByRole('button',{name:'Start Training',exact:true}).click();await page.getByRole('button',{name:'Test in Simulation',exact:true}).waitFor({timeout:20000});await page.getByRole('button',{name:'Test in Simulation',exact:true}).click();await page.getByRole('button',{name:'Deploy Model',exact:true}).waitFor({timeout:15000});await page.getByRole('button',{name:'Deploy Model',exact:true}).click();await page.locator('#demo-skill-form input').fill('QA skill');await page.locator('#demo-skill-form button').click();await page.getByText('You just closed').waitFor();
+ await page.goto('http://127.0.0.1:4173/#/console/skills');await page.getByRole('heading',{name:'QA skill',exact:true}).waitFor();
+ await page.goto('http://127.0.0.1:4173/#/console/datasets');await page.locator('#table-search').fill('does not exist');await page.getByText('No matching records. Clear the search or status filter.').waitFor();await page.locator('#table-search').fill('QA tabletop');assert.equal(await page.locator('.table-toolbar').locator('..').locator('tbody tr:visible').count(),1);
+ await page.goto('http://127.0.0.1:4173/#/docs/getting-started');await page.locator('#docs-search').fill('ROS');assert.equal(await page.locator('#docs-nav a:visible').count(),1);await page.locator('#docs-search').fill('nothingmatches');await page.getByText('No matching topics.').waitFor();
+ await page.goto('http://127.0.0.1:4173/#/early-access');await page.locator('#access-form [name="name"]').fill('QA');await page.locator('#access-form [name="email"]').fill('qa@example.com');await page.locator('#access-form [name="idea"]').fill('Browser-local QA brief');await page.locator('#access-form [type="checkbox"]').check();const download=page.waitForEvent('download');await page.locator('#access-form button').click();await download;await page.getByText('Brief downloaded. Nothing was transmitted or registered.').waitFor();
+ await page.goto('http://127.0.0.1:4173/#/not-a-route');await page.getByText('404 / ROUTE NOT FOUND').waitFor();
+ await browser.close();console.log(JSON.stringify({checked,workflow:'passed',filters:'passed',docsSearch:'passed',localBrief:'passed',failures},null,2));if(failures.length)process.exitCode=1;
+})().catch(error=>{console.error(error);process.exit(1);});
+

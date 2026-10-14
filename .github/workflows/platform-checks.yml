@@ -1,0 +1,21 @@
+name: AIROBOT Platform checks
+on:
+  push:
+    paths: ['docs/studio/**', '.github/workflows/platform-checks.yml']
+  pull_request:
+    paths: ['docs/studio/**', '.github/workflows/platform-checks.yml']
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run build

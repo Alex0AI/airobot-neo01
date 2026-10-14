@@ -1,76 +1,54 @@
-<div align="center">
+# AIROBOT / 爱洛智能
 
-# AIROBOT NEO-01 · NOVA
-### Give intelligence a body. 让智能拥有身体。
+## The Personal Computer for Physical AI.
 
-面向 Physical AI 开发者的个人机器人平台
+Physical AI 时代的个人计算平台。
 
-[产品官网](https://alex0ai.github.io/airobot-neo01/) · [开发者蓝图](https://alex0ai.github.io/airobot-neo01/developers.html) · [参与讨论](https://github.com/Alex0AI/airobot-neo01/issues) · [素材说明](https://alex0ai.github.io/airobot-neo01/media.html)
+[Open Platform](https://alex0ai.github.io/airobot-neo01/studio/) · [AIROBOT Console](https://alex0ai.github.io/airobot-neo01/studio/#/console/dashboard) · [Developer Docs](https://alex0ai.github.io/airobot-neo01/studio/#/docs/getting-started) · [Interactive Demo](https://alex0ai.github.io/airobot-neo01/studio/#/demo)
 
-**阶段：Concept → Prototype · 网站与文档已发布 · 机器人 SDK 规划中**
+A complete frontend product prototype for the Physical AI development stack:
 
-</div>
+**Hardware → Teleoperation → Data Collection → Dataset → Training → Simulation → Deployment → Skills**
 
----
+### What is included
 
-AIROBOT / 爱宝智能正在探索面向 Physical AI 开发者的个人机器人平台。
+- 23 public website routes, including Product, Platform, Hardware, Data Engine, Train, Simulation, Deploy and ecosystem pages.
+- 16 documentation topics with navigation, search, highlighted code, copy and Previous / Next.
+- 10 Console routes covering fleet, live control, datasets, training, models, simulation, deployments, skills and logs.
+- Interactive ten-step workflow with connected local artifacts and browser persistence.
+- Responsive design in warm cream, charcoal and yellow; original procedural concept illustrations.
+- Independent API, services, mock data, types, hooks, components and configuration.
 
-产品网站：https://alex0ai.github.io/airobot-neo01/
+### Run locally
 
-## 当前状态
+Requires Node.js 20+; no runtime dependencies to install.
 
-这是产品定义与开发架构蓝图，不是已发布的机器人 SDK。硬件、软件、价格和交付时间尚未定版。不要将参考视频解释为 AIROBOT 实机能力。
-
-## 规划架构
-
-| 模块 | 计划职责 | 状态 |
-| --- | --- | --- |
-| neo-core | 设备服务、遥测、运动安全与策略运行 | 规划中 |
-| neo-sdk | Python 接口和 ROS 2 桥接 | 规划中 |
-| neo-sim | 仿真模型、训练任务与评估 | 规划中 |
-| neo-skills | 动作技能、策略和示例 | 规划中 |
-| neo-hardware | 机构、电路、BOM 与装配文档 | 规划中 |
-
-## 开发循环
-
-定义任务 → 构建仿真 → 训练策略 → 硬件验证 → 采集反馈 → 迭代。
-
-Agent 层表达任务意图，技能层处理动作组合，运动层负责有边界的执行。接口与安全机制将在样机验证后确定。
-
-## 现在可以运行什么？
-
-本仓库提供静态产品网站。网站不依赖第三方 JS 包。
-
-```bash
-python -m http.server 8000 --directory docs
+```sh
+cd docs/studio
+npm run dev
+# http://127.0.0.1:4173
+npm test
+npm run build
 ```
 
-打开 http://localhost:8000 。尚无可安装的 AIROBOT SDK；未提供虚构的 pip 安装命令。
+### Publish with GitHub Pages
 
-## 路线图
+Configure **Settings → Pages → Deploy from a branch → main → /docs**. The new platform is at **/studio/**. Hash routes support direct navigation and refresh without server rewrites. The previous product concept site remains at the root URL.
 
-- [x] 产品概念与网站
-- [x] 开发者架构说明
-- [ ] 首台样机验证
-- [ ] 第一方实机图片与演示视频
-- [ ] Python SDK alpha
-- [ ] 仿真模型与评估任务
-- [ ] ROS 2 桥接
-- [ ] 硬件与装配文档
+See [platform README](docs/studio/README.md) for all routes, architecture, local workflows and deployment instructions, and [backend integration boundaries](docs/studio/INTEGRATION.md) for production work.
 
-## 参考与媒体
+### Prototype boundaries
 
-参考项目：
-- [XGO-Duck / 陆吾智能](https://www.xgorobot.com/duck.html)
-- [Microduck / Pollen Robotics](https://pollen-robotics.com/microduck/)
-- [Microduck 开源仓库](https://github.com/pollen-robotics/microduck)
+All robots, telemetry, camera scenes, episodes, training curves, evaluation results and deployments are **Simulated Data**. The frontend does not connect to real robots, cloud compute, authentication or storage services. SDK / Python / ROS 2 snippets describe proposed interfaces, not a released package. Early Access downloads a local interest brief and does not submit personal information. No customers, revenue, partnerships, benchmark results or hardware availability are claimed.
 
-网页图片与视频通过官方 URL 引用 Microduck 素材，非 AIROBOT 实机。素材权利属于原权利人，来源标注不构成授权或品牌背书。发布者应确认展示用途与权利条件。替换媒体仅需编辑 docs/media-config.js，并更新画面说明。
+### Brand architecture
 
-## 参与开发
+AIROBOT · 爱洛智能 / AIROBOT One / AIROBOT Studio / AIROBOT Data / AIROBOT Sim / AIROBOT SDK / AIROBOT Hub.
 
-当前优先方向：机械与硬件验证、运动控制、机器人仿真、开发者体验。提交变更时说明目标、验证方法与限制。请勿提交第三方受限素材、凭证或未经验证的性能宣称。
+### Validation
 
-## 许可
+Six Node domain tests cover artifact lineage, command guards, persistence, denied storage and route definitions. Browser QA covers 49 routes at desktop/mobile widths and the complete interactive workflow. The platform uses original SVG illustrations; no Pollen Robotics robot photos are presented as AIROBOT hardware.
 
-AIROBOT 项目开源许可尚未确定；第三方项目及媒体保留各自许可。不要将本规划视为第三方代码的重新许可。
+### Legacy product concept
+
+The earlier NEO-01 concept site is preserved under `docs/`. Its third-party media references are documented in [MEDIA_ATTRIBUTION.md](MEDIA_ATTRIBUTION.md). The new platform does not depend on those media assets. Project licensing remains to be determined.
